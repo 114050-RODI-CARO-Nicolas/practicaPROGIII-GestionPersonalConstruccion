@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asignar albañil</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+    
+    <nav class="navbar navbar-expand-lg bg-body-tertiary mt">
+        <div class="container-fluid">
+            <a href="#" class="navbar-brand">Club Social y Deportivo El Porvenir</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarScroll" aria-controls="navbarScroll"
+            aria-expanded="false" aria-label="Menu de navegacion">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarScroll">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                    <li class="nav-item">
+                        <a class="nav-link" href="ObrasActivas.html" aria-current="page">Obras activas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"  href="AsignarAlbanil.html" aria-current="page">Asignar albañil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"  href="PostAlbanil.html" aria-current="page">Alta albañil</a>
+                    </li>
+                 
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+        <div class="container mt-4">
+            <h1 id="obraId"></h1>
+            <div class="row mt-3">
+                <div class="col-md 4">
+                    <label for="albanilSelect">Seleccionar albañil</label>
+                    <select name="" id="albanilSelect" class="form-control">
+
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <label for="tareaTextarea">Tarea a realizar:</label>
+                    <textarea name="" id="tareaTextarea" rows="3" class="form-control"></textarea>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-2">
+                    <button class="btn btn-primary">Asignar albañil</button>
+                </div>
+            </div>
+        </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+
+    const API_URL = "https://localhost:44364/api/GestionPersonal/";
+    const urlParams = new URLSearchParams(window.location.search);
+    const idObra = urlParams.get('idObra');
+
+    document.getElementById("obraId").innerText = `ID de la obra actual: ${idObra}`;
+
+    async function cargarAlbanilesNoEnObra(){
+        const response = await fetch(`${API_URL}albaniles?obraId=${idObra}`)
+        const responseJson = await response.json();
+        if(!responseJson.success)
+        {   
+           alert(responseJson.message) 
+        }
+        const albanilSelect = document.getElementById('albanilSelect');
+        responseJson.data.forEeach(albanil => {
+            const option = document.createElement('option');
+            option.value = albanil.id;
+            option.innerText = `${albanil.apellido}, ${albanil.nombre}`;
+            albanilSelect.appendChild(option);
+        })
+    }
+
+    async function asignarAlbanil(){
+        const albanilId = document.getElementById('albanilSelect').value;
+        const tarea = document.getElementById('tareaTextArea').value;
+
+        const data = {
+            idAlbanil: albanilId,
+            idObra: idObra, 
+            tareArealizar: tarea
+        };
+
+        const response = await fetch(`${API_URL}albanilxobra`, 
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        const responseJson = await response.json();
+        if(!responseJson.success)
+        {
+            alert(responseData.message)
+        }
+        alert(responseData.message);
+    }
+
+    
+    cargarAlbanilesNoEnObra();
+</script>
+
+
+    
+</body>
+</html>

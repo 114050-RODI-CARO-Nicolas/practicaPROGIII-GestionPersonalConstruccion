@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obras activas</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary mt">
+        <div class="container-fluid">
+            <a href="#" class="navbar-brand">Club Social y Deportivo El Porvenir</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarScroll" aria-controls="navbarScroll"
+            aria-expanded="false" aria-label="Menu de navegacion">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarScroll">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                    <li class="nav-item">
+                        <a class="nav-link" href="ObrasActivas.html" aria-current="page">Obras activas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"  href="AsignarAlbanil.html" aria-current="page">Asignar albañil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"  href="PostAlbanil.html" aria-current="page">Alta albañil</a>
+                    </li>
+                 
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1>Obras activas</h1>
+        <div class="row mt-3">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Datos varios</th>
+                        <th scope="col">Tipo de obra</th>
+                        <th scope="col">Cantidad de albañiles</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+            </table>
+            <tbody id="obrasBody">
+
+            </tbody>
+
+        </div>
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+
+    const API_URL = "https://localhost:44364/api/GestionPersonal/";
+
+    async function cargarObrasActivas()
+    {
+        try {
+            const response = await fetch(`${API_URL}obras`)
+            let responseJson = await response.json();
+            if(!responseJson.sucess)
+                {
+                    alert(responseJson.message)
+                }
+
+            let obras = responseJson.data;
+            let obrasBody = document.getElementById("obrasBody");
+            obras.forEach(obra => {
+                const row = `<tr>
+                    <td>${obra.nombre}</td>
+                    <td>${obra.datosVarios}</td>
+                    <td>${obra.nombreTipoObra}</td>
+                    <td>${obra.cantidadAlbaniles}</td>
+                    <td>
+                        ${obra.nombreTipoObra === 'Edificio' ? 
+                    `<button class="btn btn-primary" onckick="asignarAlbanil('${obra.id}')"> Asignar albañil </button>` : ''
+                    }
+                    </td>
+                    </tr>
+                    `;
+                obrasBody.innerHTML += row;
+            });
+
+        } catch (error)
+        {
+            console.log(error);
+        }
+    }
+
+    function asignarAlbanil(idObra)
+    {
+        window.location.href=`AsignarAlbanil.html?idObra=${idObra}`;
+    }
+
+
+
+</script>
+
+
+    
+</body>
+</html>

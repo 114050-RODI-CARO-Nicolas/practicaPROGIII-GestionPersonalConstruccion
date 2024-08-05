@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alta de albañil</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary mt">
+        <div class="container-fluid">
+            <a href="#" class="navbar-brand">Club Social y Deportivo El Porvenir</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarScroll" aria-controls="navbarScroll"
+            aria-expanded="false" aria-label="Menu de navegacion">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarScroll">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                    <li class="nav-item">
+                        <a class="nav-link" href="ObrasActivas.html" aria-current="page">Obras activas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"  href="AsignarAlbanil.html" aria-current="page">Asignar albañil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"  href="PostAlbanil.html" aria-current="page">Alta albañil</a>
+                    </li>
+                 
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1>Alta de nuevo albañil</h1>
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <form id="formularioAlbanil">
+                    <div class="form-group">
+                        <label for="nombreInput">Nombre</label>
+                        <input type="text" class="form-control" id="nombreInput" required >
+                    </div>
+                    <div class="form-group">
+                        <label for="apellidoInput">Apellido</label>
+                        <input type="text" class="form-control" id="apellidoInput" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dniInput">DNI</label>
+                        <input type="text" class="form-control" id="dniInput" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefonoInput">Telefono</label>
+                        <input type="number" class="form-control" id="telefonoInput">
+                    </div>
+                    <div class="form-group">
+                        <label for="calleInput">Calle</label>
+                        <input type="text" class="form-control" id="calleInput">
+                    </div>
+                    <div class="form-group">
+                        <label for="numeroCalleInput">Numero</label>
+                        <input type="number" class="form-control" id="numeroCalleInput">
+                    </div>
+                    <div class="form-group">
+                        <label for="codigoPostalInput">Código postal</label>
+                        <input type="number" class="form-control" id="codigoPostalInput">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar nuevo albañil</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        const API_URL = "https://localhost:44364/api/GestionPersonal/";
+        document.getElementById('formularioAlbanil').addEventListener('submit'), async function(event) {
+            event.preventDefault();
+
+            const nombre = document.getElementById('nombreInput').value;
+            const apellido = document.getElementById('apellidoInput').value;
+            const dni = document.getElementById('dniInput').value;
+            const telefono = document.getElementById('telefonoInput').value;
+            const calle = document.getElementById('calleInput').value;
+            const numero = document.getElementById('numeroCalleInput').value;
+            const codigoPostal = document.getElementById('codigoPostalInput').value;
+
+            const data = {
+                nombre,
+                apellido,
+                dni,
+                telefono,
+                calle,
+                numero,
+                codigoPostal
+            };
+
+            const response = await fetch(`${API_URL}albanil`,
+            {
+                method: 'POST',
+                headers : {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data);
+            })
+            const responseJson = await response.json();
+            if(!responseJson.success)
+            {
+                alert(responseJson.message)
+                return;
+            }
+            alert(responseData.message)
+            document.getElementById('formularioAlbanil').reset();
+
+
+
+        }
+
+
+
+
+
+
+    </script>
+
+
+    
+</body>
+</html>
